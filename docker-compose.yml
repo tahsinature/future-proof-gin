@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:14.1-alpine3.14
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASS
+      POSTGRES_DB: $DB_NAME
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - /app/bin
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+    command: sh -c './wait-for db:5432 -- make run-dev'
+    ports:
+      - "127.0.0.1:9000:9000"
