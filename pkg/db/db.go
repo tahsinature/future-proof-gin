@@ -44,8 +44,8 @@ func ConnectDB(dsn string) (db *gorm.DB, err error) {
 	return db, nil
 }
 
-func GetDB() (interface{}, *gorm.DB) {
-	return nil, db
+func GetDB() *gorm.DB {
+	return db
 }
 
 var RedisClient *_redis.Client

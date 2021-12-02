@@ -8,7 +8,7 @@ import (
 type UserSeeder struct{}
 
 func (UserSeeder) CreateOne() *models.User {
-	_, db := db.GetDB()
+	db := db.GetDB()
 	userModel := models.User{
 		Email:    "john@mail.com",
 		Name:     "John Doe",
