@@ -10,12 +10,12 @@ import (
 	"github.com/go-gorp/gorp"
 	_redis "github.com/go-redis/redis/v7"
 	_ "github.com/lib/pq" // import postgres
+	"github.com/tahsinature/future-proof-gin/pkg/config"
 	"github.com/tahsinature/future-proof-gin/pkg/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-// DB ...
 type DB struct {
 	*sql.DB
 }
@@ -27,8 +27,8 @@ var (
 
 // Init ...
 func Init() {
-	dbinfo := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", os.Getenv("DB_HOST"), os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DB_NAME"))
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Shanghai", os.Getenv("DB_HOST"), os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DB_NAME"))
+	dbinfo := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", config.DB.Host, config.DB.User, config.DB.Password, config.DB.DBname)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Shanghai", config.DB.Host, config.DB.User, config.DB.Password, config.DB.DBname)
 
 	var err error
 	db1, db2, err = ConnectDB(dbinfo, dsn)
