@@ -3,12 +3,12 @@ package services
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/tahsinature/future-proof-gin/pkg/config"
 	"github.com/tahsinature/future-proof-gin/pkg/models"
 	uuid "github.com/twinj/uuid"
 
@@ -34,7 +34,7 @@ func (a AuthService) CreateToken(userID int64) (*models.TokenDetails, error) {
 	atClaims["exp"] = td.AtExpires
 
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
-	td.AccessToken, err = at.SignedString([]byte(os.Getenv("ACCESS_SECRET")))
+	td.AccessToken, err = at.SignedString([]byte(config.JWT.AccessSecret))
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func (a AuthService) CreateToken(userID int64) (*models.TokenDetails, error) {
 	rtClaims["user_id"] = userID
 	rtClaims["exp"] = td.RtExpires
 	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
-	td.RefreshToken, err = rt.SignedString([]byte(os.Getenv("REFRESH_SECRET")))
+	td.RefreshToken, err = rt.SignedString([]byte(config.JWT.RefreshSecret))
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +85,7 @@ func (a AuthService) VerifyToken(r *http.Request) (*jwt.Token, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return []byte(os.Getenv("ACCESS_SECRET")), nil
+		return []byte(config.JWT.AccessSecret), nil
 	})
 	if err != nil {
 		return nil, err

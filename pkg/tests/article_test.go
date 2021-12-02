@@ -101,8 +101,6 @@ func TestIntDB(t *testing.T) {
 		log.Fatal("Error loading .env file, please create one in the root directory")
 	}
 
-	fmt.Println("DB_PASS", os.Getenv("DB_PASS"))
-
 	db.Init()
 	db.InitRedis(1)
 }
@@ -546,19 +544,4 @@ func TestUserLogout(t *testing.T) {
 	testRouter.ServeHTTP(resp, req)
 
 	assert.Equal(t, resp.Code, http.StatusOK)
-}
-
-/**
-* TestCleanUp
-* Deletes the created user with it's articles
-*
-* Must pass
- */
-func TestCleanUp(t *testing.T) {
-	var err error
-	db1, _ := db.GetDB()
-	_, err = db1.Exec("DELETE FROM public.user WHERE email=$1", testEmail)
-	if err != nil {
-		t.Error(err)
-	}
 }

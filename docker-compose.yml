@@ -12,6 +12,9 @@ services:
       POSTGRES_PASSWORD: $DB_PASS
       POSTGRES_DB: $DB_NAME
 
+  redis:
+    image: redis:6.2.6-alpine3.15
+
   app:
     build:
       context: .
@@ -23,6 +26,7 @@ services:
       - db
     environment:
       DB_HOST: db
-    command: sh -c './wait-for db:5432 -- make run-dev'
+      REDIS_HOST: redis:6379
+    command: sh -c './wait-for db:5432 redis:6379 -- make run-dev'
     ports:
       - "127.0.0.1:9000:9000"

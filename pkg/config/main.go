@@ -9,8 +9,10 @@ import (
 )
 
 var (
-	DB  dbConfig
-	App appConfig
+	DB    dbConfig
+	App   appConfig
+	JWT   jwtConfig
+	Redis redisConfig
 )
 
 func Validate() {
@@ -35,5 +37,16 @@ func Validate() {
 		APIVersion:   os.Getenv("API_VERSION"),
 	}
 
-	utilities.ValidateMultipleStruct(DB, App)
+	JWT = jwtConfig{
+		AccessSecret:  os.Getenv("ACCESS_SECRET"),
+		RefreshSecret: os.Getenv("REFRESH_SECRET"),
+	}
+
+	Redis = redisConfig{
+		Host:     os.Getenv("REDIS_HOST"),
+		Password: os.Getenv("REDIS_PASSWORD"),
+		DB:       os.Getenv("REDIS_DB"),
+	}
+
+	utilities.ValidateMultipleStruct(DB, App, JWT, Redis)
 }
