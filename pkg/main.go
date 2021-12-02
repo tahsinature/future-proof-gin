@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tahsinature/future-proof-gin/pkg/config"
 	"github.com/tahsinature/future-proof-gin/pkg/db"
+	"github.com/tahsinature/future-proof-gin/pkg/db/seeds"
 	"github.com/tahsinature/future-proof-gin/pkg/routes"
 )
 
@@ -18,7 +19,10 @@ func main() {
 
 	db.Init()
 	db.SyncForce()
-	db.InitRedis(1)
+	db.InitRedis()
+
+	userSeeder := new(seeds.UserSeeder)
+	userSeeder.CreateOne()
 
 	r.Run(":" + config.App.Port)
 }

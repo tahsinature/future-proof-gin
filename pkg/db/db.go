@@ -17,11 +17,12 @@ import (
 var db *gorm.DB
 
 func Init() {
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Shanghai",
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
 		config.DB.Host,
 		config.DB.User,
 		config.DB.Password,
-		config.DB.DBname)
+		config.DB.DBname,
+		config.DB.Port)
 
 	var err error
 	db, err = ConnectDB(dsn)
@@ -51,7 +52,7 @@ func GetDB() (*gorp.DbMap, *gorm.DB) {
 
 var RedisClient *_redis.Client
 
-func InitRedis(selectDB ...int) {
+func InitRedis() {
 	host := config.Redis.Host
 	password := config.Redis.Password
 	db, _ := strconv.ParseInt(config.Redis.DB, 10, 8)
