@@ -1,12 +1,11 @@
 package config
 
 import (
-	"fmt"
 	"log"
 	"os"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
+	"github.com/tahsinature/future-proof-gin/pkg/utilities"
 )
 
 var (
@@ -36,16 +35,5 @@ func Validate() {
 		APIVersion:   os.Getenv("API_VERSION"),
 	}
 
-	validate := validator.New()
-
-	fmt.Println(App)
-
-	err = validate.Struct(DB)
-	if err != nil {
-		log.Fatal(fmt.Sprintf("error: %s", err))
-	}
-	err = validate.Struct(App)
-	if err != nil {
-		log.Fatal(fmt.Sprintf("error: %s", err))
-	}
+	utilities.ValidateMultipleStruct(DB, App)
 }
