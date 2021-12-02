@@ -5,9 +5,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/go-gorp/gorp"
 	_redis "github.com/go-redis/redis/v7"
-	_ "github.com/lib/pq"
 	"github.com/tahsinature/future-proof-gin/pkg/config"
 	"github.com/tahsinature/future-proof-gin/pkg/models"
 	"gorm.io/driver/postgres"
@@ -46,7 +44,7 @@ func ConnectDB(dsn string) (db *gorm.DB, err error) {
 	return db, nil
 }
 
-func GetDB() (*gorp.DbMap, *gorm.DB) {
+func GetDB() (interface{}, *gorm.DB) {
 	return nil, db
 }
 
