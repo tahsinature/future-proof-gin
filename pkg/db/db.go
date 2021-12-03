@@ -48,10 +48,14 @@ func GetDB() *gorm.DB {
 	return db
 }
 
+func FlushDB() {
+	// return
+}
+
 var RedisClient *_redis.Client
 
 func InitRedis() {
-	host := config.Redis.Host
+	host := fmt.Sprintf("%s:%s", config.Redis.Host, config.Redis.Port)
 	password := config.Redis.Password
 	db, _ := strconv.ParseInt(config.Redis.DB, 10, 8)
 

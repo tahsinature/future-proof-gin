@@ -14,6 +14,8 @@ services:
 
   redis:
     image: redis:6.2.6-alpine3.15
+    ports:
+      - "6379:6379"
 
   app:
     build:
@@ -26,7 +28,7 @@ services:
       - db
     environment:
       DB_HOST: db
-      REDIS_HOST: redis:6379
-    command: sh -c './wait-for db:5432 redis:6379 -- make run-dev'
+      REDIS_HOST: redis
+    command: sh -c './wait-for db:5432 redis:6379 -- ./bin/air'
     ports:
       - "127.0.0.1:9000:9000"
