@@ -9,8 +9,11 @@ import (
 
 func Execute() {
 	db.Sync(config.EntryArgs.SyncForce)
+
 	userSeeder := new(UserSeeder)
-	userSeeder.CreateOne()
+	postSeeder := new(PostSeeder)
+	users := userSeeder.CreateMany(3)
+	postSeeder.CreateMany(users, 3)
 
 	fmt.Println("Seeding Done...")
 }

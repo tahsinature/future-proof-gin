@@ -3,4 +3,4 @@ prepare:
 run:
 	go run pkg/main.go -r
 seed:
-	go run pkg/main.go -s
+	go run pkg/main.go --seed --syncf

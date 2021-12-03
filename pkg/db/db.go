@@ -42,7 +42,7 @@ func Init() {
 func Sync(force bool) {
 	allModelsNames := []string{
 		models.User{}.TableName(),
-		models.Article{}.TableName(),
+		models.Post{}.TableName(),
 	}
 
 	if force {
@@ -55,7 +55,7 @@ func Sync(force bool) {
 
 	err := db.AutoMigrate(
 		models.User{},
-		models.Article{},
+		models.Post{},
 	)
 	if err != nil {
 		log.Panic(err)
