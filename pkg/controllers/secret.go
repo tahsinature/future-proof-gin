@@ -2,9 +2,9 @@ package controllers
 
 import "github.com/gin-gonic/gin"
 
-type SecretController struct{}
+type Secret struct{}
 
-func (SecretController) Get(c *gin.Context) {
+func (Secret) Get(c *gin.Context) {
 	c.JSON(200, map[string]interface{}{
 		"message": "Secret Page",
 	})

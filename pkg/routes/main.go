@@ -6,21 +6,17 @@ import (
 
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"github.com/tahsinature/future-proof-gin/pkg/controllers"
-	"github.com/tahsinature/future-proof-gin/pkg/forms"
 	"github.com/tahsinature/future-proof-gin/pkg/middlewares"
 )
 
 var (
-	userController   = new(controllers.UserController)
-	secretController = new(controllers.SecretController)
+	userController   = new(controllers.User)
+	secretController = new(controllers.Secret)
 )
 
 func Setup() *gin.Engine {
 	engine := gin.Default()
-
-	binding.Validator = new(forms.DefaultValidator)
 
 	engine.Use(middlewares.Cors)
 	engine.Use(middlewares.RequestID)

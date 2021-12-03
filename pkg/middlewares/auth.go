@@ -1,8 +1,6 @@
 package middlewares
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/tahsinature/future-proof-gin/pkg/services"
 )
@@ -10,21 +8,14 @@ import (
 var authService = new(services.AuthService)
 
 func Auth(c *gin.Context) {
-	tokenAuth, err := authService.ExtractTokenMetadata(c.Request)
-	if err != nil {
-		// Token either expired or not valid
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Please login first"})
-		return
-	}
+	// take token from request header
 
-	userID, err := authService.FetchAuth(tokenAuth)
-	if err != nil {
-		// Token does not exists in Redis (User logged out or expired)
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Please login first"})
-		return
-	}
+	// validate token
 
-	// To be called from GetUserID()
-	c.Set("userID", userID)
+	// if token is valid, set user to context
+
+	// if token is invalid, return 401
+
+	// c.Set("user", userModel)
 	c.Next()
 }
