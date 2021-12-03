@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/alexflint/go-arg"
 	"github.com/gin-gonic/gin"
 	"github.com/tahsinature/future-proof-gin/pkg/config"
@@ -9,27 +11,25 @@ import (
 	"github.com/tahsinature/future-proof-gin/pkg/routes"
 )
 
-var args struct {
-	Run  bool `arg:"-r,help:Run the server"`
-	Seed bool `arg:"-s,help:Seed the database"`
-}
-
 func main() {
-	arg.MustParse(&args)
+	arg.MustParse(&config.EntryArgs)
 	config.Validate()
 	gin.SetMode(gin.ReleaseMode)
 
 	db.Init()
-	db.SyncForce()
 	db.InitRedis()
 
-	if args.Run {
+	if config.EntryArgs.Run {
 		engine := routes.Setup()
 
-		engine.Run(":" + config.App.Port)
+		fmt.Println("Server started on port:", config.App.Port)
+		err := engine.Run(":" + config.App.Port)
+		if err != nil {
+			panic(err)
+		}
 	}
 
-	if args.Seed {
+	if config.EntryArgs.Seed {
 		seeds.Execute()
 	}
 }

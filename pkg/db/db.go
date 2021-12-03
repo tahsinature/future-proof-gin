@@ -30,27 +30,36 @@ func Init() {
 
 	fmt.Println("DB Connected...")
 
+	if config.EntryArgs.SyncForce {
+		Sync(true)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func SyncForce() {
+func Sync(force bool) {
 	allModelsNames := []string{
 		models.User{}.TableName(),
 		models.Article{}.TableName(),
 	}
 
-	for _, modelName := range allModelsNames {
-		if err := db.Exec(fmt.Sprintf(`DROP TABLE IF EXISTS "%s"`, modelName)).Error; err != nil {
-			panic(err)
+	if force {
+		for _, modelName := range allModelsNames {
+			if err := db.Exec(fmt.Sprintf(`DROP TABLE IF EXISTS "%s"`, modelName)).Error; err != nil {
+				panic(err)
+			}
 		}
 	}
 
-	db.AutoMigrate(
+	err := db.AutoMigrate(
 		models.User{},
 		models.Article{},
 	)
+	if err != nil {
+		log.Panic(err)
+	}
 
 	fmt.Println("SyncForce Done...")
 }

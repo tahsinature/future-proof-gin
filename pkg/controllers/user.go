@@ -42,7 +42,7 @@ func (ctrl UserController) Login(c *gin.Context) {
 		return
 	}
 
-	token, err := authService.CreateToken(int64(user.ID))
+	token, err := authService.CreateToken(user.ID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "something went wrong"})
 		return

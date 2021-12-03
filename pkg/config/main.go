@@ -8,11 +8,18 @@ import (
 	"github.com/tahsinature/future-proof-gin/pkg/utilities"
 )
 
+type EntryArgsType struct {
+	Run       bool `arg:"-r,help:Run the server"`
+	Seed      bool `arg:"--seed,help:Seed the database"`
+	SyncForce bool `arg:"--syncf,help:Sync Force the database"`
+}
+
 var (
-	DB    dbConfig
-	App   appConfig
-	JWT   jwtConfig
-	Redis redisConfig
+	DB        dbConfig
+	App       appConfig
+	JWT       jwtConfig
+	Redis     redisConfig
+	EntryArgs EntryArgsType
 )
 
 func Validate() {

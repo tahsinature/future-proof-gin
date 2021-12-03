@@ -17,7 +17,7 @@ import (
 
 type AuthService struct{}
 
-func (a AuthService) CreateToken(userID int64) (*models.TokenDetails, error) {
+func (a AuthService) CreateToken(userID string) (*models.TokenDetails, error) {
 	td := &models.TokenDetails{}
 	td.AtExpires = time.Now().Add(time.Minute * 15).Unix()
 	td.AccessUUID = uuid.NewV4().String()
