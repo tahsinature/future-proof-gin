@@ -1,6 +1,10 @@
 package seeds
 
 import (
+	"crypto/md5"
+	"fmt"
+
+	"github.com/brianvoe/gofakeit/v6"
 	"github.com/tahsinature/future-proof-gin/pkg/db"
 	"github.com/tahsinature/future-proof-gin/pkg/models"
 )
@@ -10,9 +14,9 @@ type UserSeeder struct{}
 func (UserSeeder) CreateOne() *models.User {
 	db := db.GetDB()
 	userModel := models.User{
-		Email:    "john@mail.com",
-		Name:     "John Doe",
-		Password: "password",
+		Email:    gofakeit.Email(),
+		Name:     gofakeit.Name(),
+		Password: fmt.Sprintf("%x", md5.Sum([]byte(gofakeit.Password(true, true, true, true, false, 16)))),
 	}
 	err := db.Create(&userModel).Error
 	if err != nil {
