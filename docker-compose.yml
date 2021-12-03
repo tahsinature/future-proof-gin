@@ -7,6 +7,8 @@ services:
       - "5432:5432"
     env_file:
       - .env
+    volumes:
+      - ./scripts/database.sql:/docker-entrypoint-initdb.d/database.sql
     environment:
       POSTGRES_USER: $DB_USER
       POSTGRES_PASSWORD: $DB_PASS
@@ -29,6 +31,6 @@ services:
     environment:
       DB_HOST: db
       REDIS_HOST: redis
-    command: sh -c './wait-for db:5432 redis:6379 -- ./bin/air'
+    command: sh -c './scripts/wait-for db:5432 redis:6379 -- ./bin/air'
     ports:
-      - "127.0.0.1:9000:9000"
+      - "9000:9000"
