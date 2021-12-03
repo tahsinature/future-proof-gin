@@ -18,6 +18,10 @@ func main() {
 	arg.MustParse(&args)
 	config.Validate()
 
+	db.Init()
+	db.SyncForce()
+	db.InitRedis()
+
 	if args.Run {
 		if config.App.IsProduction {
 			gin.SetMode(gin.ReleaseMode)
@@ -25,15 +29,10 @@ func main() {
 
 		r := routes.Setup()
 
-		db.Init()
-		db.SyncForce()
-		db.InitRedis()
-
 		r.Run(":" + config.App.Port)
 	}
 
 	if args.Seed {
-		userSeeder := new(seeds.UserSeeder)
-		userSeeder.CreateOne()
+		seeds.Execute()
 	}
 }

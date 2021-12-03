@@ -15,6 +15,7 @@ import (
 var db *gorm.DB
 
 func Init() {
+	fmt.Println("test...")
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
 		config.DB.Host,
 		config.DB.User,
@@ -23,33 +24,40 @@ func Init() {
 		config.DB.Port)
 
 	var err error
-	db, err = ConnectDB(dsn)
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("DB Connected...")
+
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 func SyncForce() {
-	db.AutoMigrate(&models.User{}, &models.Article{})
-	fmt.Println("SyncForce Done...")
-}
-
-func ConnectDB(dsn string) (db *gorm.DB, err error) {
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		return nil, err
+	allModelsNames := []string{
+		models.User{}.TableName(),
+		models.Article{}.TableName(),
 	}
 
-	fmt.Println("DB Connected...")
-	return db, nil
+	for _, modelName := range allModelsNames {
+		if err := db.Exec(fmt.Sprintf(`DROP TABLE IF EXISTS "%s"`, modelName)).Error; err != nil {
+			panic(err)
+		}
+	}
+
+	db.AutoMigrate(
+		models.User{},
+		models.Article{},
+	)
+
+	fmt.Println("SyncForce Done...")
 }
 
 func GetDB() *gorm.DB {
 	return db
-}
-
-func FlushDB() {
-	// return
 }
 
 var RedisClient *_redis.Client

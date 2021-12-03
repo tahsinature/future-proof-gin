@@ -9,6 +9,6 @@ type Article struct {
 	Content string
 }
 
-func (a *Article) TableName() string {
-	return "article"
+func (Article) TableName() string {
+	return "articles"
 }
