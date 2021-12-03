@@ -1,14 +1,12 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 	"runtime"
 
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"github.com/tahsinature/future-proof-gin/pkg/config"
 	"github.com/tahsinature/future-proof-gin/pkg/controllers"
 	"github.com/tahsinature/future-proof-gin/pkg/forms"
 	"github.com/tahsinature/future-proof-gin/pkg/middlewares"
@@ -20,7 +18,6 @@ var (
 )
 
 func Setup() *gin.Engine {
-	fmt.Println(config.DB)
 	routes := gin.Default()
 	binding.Validator = new(forms.DefaultValidator)
 
