@@ -3,6 +3,9 @@ module github.com/tahsinature/future-proof-gin
 go 1.14
 
 require (
+	github.com/alexflint/go-arg v1.4.2 // indirect
+	github.com/brianvoe/gofakeit v3.18.0+incompatible // indirect
+	github.com/brianvoe/gofakeit/v6 v6.10.0 // indirect
 	github.com/gin-contrib/gzip v0.0.1
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-playground/validator/v10 v10.8.0
