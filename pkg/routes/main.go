@@ -18,33 +18,34 @@ var (
 )
 
 func Setup() *gin.Engine {
-	routes := gin.Default()
+	engine := gin.Default()
+
 	binding.Validator = new(forms.DefaultValidator)
 
-	routes.Use(middlewares.Cors)
-	routes.Use(middlewares.RequestID)
-	routes.Use(gzip.Gzip(gzip.DefaultCompression))
+	engine.Use(middlewares.Cors)
+	engine.Use(middlewares.RequestID)
+	engine.Use(gzip.Gzip(gzip.DefaultCompression))
 
-	v1 := routes.Group("/v1")
+	v1 := engine.Group("/v1")
 	secretRoutes := v1.Group("/secret")
 
-	AddPingRoutes(routes.Group("/ping"))
+	AddPingRoutes(engine.Group("/ping"))
 	AddUserRoutes(v1.Group("/users"))
 	AddSecretRoutes(secretRoutes)
 
-	routes.LoadHTMLGlob("./pkg/public/html/*")
-	routes.Static("/public", "./pkg/public")
+	engine.LoadHTMLGlob("./pkg/public/html/*")
+	engine.Static("/public", "./pkg/public")
 
-	routes.GET("/", func(c *gin.Context) {
+	engine.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
 			"goVersion":             runtime.Version(),
 			"ginBoilerplateVersion": "v0.03",
 		})
 	})
 
-	routes.NoRoute(func(c *gin.Context) {
+	engine.NoRoute(func(c *gin.Context) {
 		c.HTML(404, "404.html", gin.H{})
 	})
 
-	return routes
+	return engine
 }

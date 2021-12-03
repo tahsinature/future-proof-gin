@@ -17,19 +17,16 @@ var args struct {
 func main() {
 	arg.MustParse(&args)
 	config.Validate()
+	gin.SetMode(gin.ReleaseMode)
 
 	db.Init()
 	db.SyncForce()
 	db.InitRedis()
 
 	if args.Run {
-		if config.App.IsProduction {
-			gin.SetMode(gin.ReleaseMode)
-		}
+		engine := routes.Setup()
 
-		r := routes.Setup()
-
-		r.Run(":" + config.App.Port)
+		engine.Run(":" + config.App.Port)
 	}
 
 	if args.Seed {
