@@ -10,6 +10,7 @@ import (
 	"github.com/tahsinature/future-proof-gin/pkg/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var db *gorm.DB
@@ -23,7 +24,9 @@ func Init() {
 		config.DB.Port)
 
 	var err error
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
 	if err != nil {
 		panic(err)
 	}
