@@ -3,6 +3,8 @@ package config
 import (
 	"log"
 	"os"
+	"path"
+	"runtime"
 
 	"github.com/joho/godotenv"
 	"github.com/tahsinature/future-proof-gin/pkg/utilities"
@@ -20,11 +22,14 @@ var (
 	JWT       jwtConfig
 	Redis     redisConfig
 	EntryArgs EntryArgsType
+	Other     otherConfig
 )
 
 func Validate() {
-	err := godotenv.Load(".env")
-	if err != nil {
+	_, file, _, _ := runtime.Caller(0)
+	rootPath := path.Join(file, "..", "..", "..")
+
+	if envPath := path.Join(rootPath, ".env"); godotenv.Load(envPath) != nil {
 		log.Fatal("error: failed to load the env file")
 	}
 
@@ -56,5 +61,9 @@ func Validate() {
 		DB:       os.Getenv("REDIS_DB"),
 	}
 
-	utilities.ValidateMultipleStruct(DB, App, JWT, Redis)
+	Other = otherConfig{
+		RootPath: rootPath,
+	}
+
+	utilities.ValidateMultipleStruct(DB, App, JWT, Redis, Other)
 }

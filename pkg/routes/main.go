@@ -2,10 +2,12 @@ package routes
 
 import (
 	"net/http"
+	"path"
 	"runtime"
 
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
+	"github.com/tahsinature/future-proof-gin/pkg/config"
 	"github.com/tahsinature/future-proof-gin/pkg/controllers"
 	"github.com/tahsinature/future-proof-gin/pkg/middlewares"
 )
@@ -28,8 +30,8 @@ func Setup() *gin.Engine {
 	new(User).setup(v1.Group("/users"))
 	new(Secret).setup(v1.Group("/secret"))
 
-	engine.LoadHTMLGlob("./pkg/public/html/*")
-	engine.Static("/public", "./pkg/public")
+	engine.LoadHTMLGlob(path.Join(config.Other.RootPath, "pkg", "public", "html/*"))
+	engine.Static("/public", path.Join(config.Other.RootPath, "pkg", "public"))
 
 	engine.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
