@@ -37,7 +37,13 @@ func (as AuthService) HandleLogin(payload forms.Login) (err *exception.Response,
 }
 
 func (AuthService) HandleRegister(payload forms.Register) (err *exception.Response, data interface{}) {
-	return
+	user, err := userRepo.Register(payload)
+
+	return err, map[string]interface{}{
+		"id":    user.ID,
+		"name":  user.Name,
+		"email": user.Email,
+	}
 }
 
 func (AuthService) GenHashPassFromInput(input string) string {

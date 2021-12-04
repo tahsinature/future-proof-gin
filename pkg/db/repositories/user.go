@@ -2,8 +2,10 @@ package repositories
 
 import (
 	"errors"
+	"net/http"
 
 	"github.com/tahsinature/future-proof-gin/pkg/db"
+	"github.com/tahsinature/future-proof-gin/pkg/exception"
 	"github.com/tahsinature/future-proof-gin/pkg/forms"
 	"github.com/tahsinature/future-proof-gin/pkg/models"
 	"golang.org/x/crypto/bcrypt"
@@ -46,27 +48,23 @@ func (m UserRepository) GetUserByEmail(email string) (models.User, error) {
 	return user, nil
 }
 
-func (m UserRepository) Register(form forms.Register) (user models.User, err error) {
+func (m UserRepository) Register(form forms.Register) (user models.User, err *exception.Response) {
 	db := db.GetDB()
-	if exists, err := m.CheckUserExistsByEmail(form.Email); err != nil {
-		return user, err
-	} else if exists {
-		return user, errors.New("user already exists")
+	if exists, _ := m.CheckUserExistsByEmail(form.Email); exists {
+		return user, new(exception.Response).New(http.StatusConflict, exception.Flags.Get("ALREADY_REGISTERED"), "user already exists")
 	}
 
 	bytePassword := []byte(form.Password)
-	hashedPassword, err := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
-	if err != nil {
-		return user, errors.New("something went wrong, please try again later")
+	if hashedPassword, err := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost); err != nil {
+		panic(err)
+	} else {
+		user.Password = string(hashedPassword)
+		user.Name = form.Name
+		user.Email = form.Email
 	}
 
-	user.Password = string(hashedPassword)
-	user.Name = form.Name
-	user.Email = form.Email
-	err = db.Create(&user).Error
-
-	if err != nil {
-		return user, errors.New("something went wrong, please try again later")
+	if err := db.Create(&user).Error; err != nil {
+		panic(err)
 	}
 
 	return user, err

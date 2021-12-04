@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"fmt"
-
 	"github.com/tahsinature/future-proof-gin/pkg/forms"
 	"github.com/tahsinature/future-proof-gin/pkg/services"
 
@@ -30,5 +28,16 @@ func (ctrl User) Login(c *gin.Context) {
 }
 
 func (ctrl User) Register(c *gin.Context) {
-	fmt.Println("registering")
+	var body forms.Register
+	if isValid := ValidateBody(&body, c); !isValid {
+		return
+	}
+
+	err, data := authService.HandleRegister(body)
+	if err != nil {
+		Response.FromError(c, *err)
+		return
+	}
+
+	Response.Success(c, data)
 }

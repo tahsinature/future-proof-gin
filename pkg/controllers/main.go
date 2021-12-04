@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +22,6 @@ func ValidateBody(schema interface{}, c *gin.Context) bool {
 	}
 
 	if err := validate.Struct(schema); err != nil {
-		fmt.Println(err.Error())
 		Response.BadRequest(c, err.Error())
 		return false
 	}
