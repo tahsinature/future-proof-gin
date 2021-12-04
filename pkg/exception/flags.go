@@ -1,7 +1,8 @@
 package exception
 
 var flags map[string]string = map[string]string{
-	"INVALID_LOGIN": "INVALID_LOGIN",
+	"INVALID_LOGIN":      "INVALID_LOGIN",
+	"ALREADY_REGISTERED": "ALREADY_REGISTERED",
 }
 
 type FlagsType struct{}
