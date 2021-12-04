@@ -1,14 +1,12 @@
 package forms
 
-type UserForm struct{}
-
-type LoginForm struct {
-	Email    string `form:"email" json:"email" binding:"required,email"`
-	Password string `form:"password" json:"password" binding:"required,min=3,max=50"`
+type Login struct {
+	Email    string `validate:"required,email"`
+	Password string `validate:"required,gte=6,lte=8"`
 }
 
-type RegisterForm struct {
-	Name     string `form:"name" json:"name" binding:"required,min=3,max=20,fullName"` // fullName rule is in validator.go
-	Email    string `form:"email" json:"email" binding:"required,email"`
-	Password string `form:"password" json:"password" binding:"required,min=3,max=50"`
+type Register struct {
+	Name     string `validate:"required,lte=50"`
+	Email    string `validate:"required,email"`
+	Password string `validate:"required,gte=6,lte=8"`
 }

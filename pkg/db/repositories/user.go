@@ -50,7 +50,7 @@ func (m UserRepository) GetUserByEmail(email string) (models.User, error) {
 	return user, nil
 }
 
-func (m UserRepository) Register(form forms.RegisterForm) (user models.User, err error) {
+func (m UserRepository) Register(form forms.Register) (user models.User, err error) {
 	db := db.GetDB()
 	if exists, err := m.CheckUserExistsByEmail(form.Email); err != nil {
 		return user, err
