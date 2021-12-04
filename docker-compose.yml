@@ -31,6 +31,6 @@ services:
     environment:
       DB_HOST: db
       REDIS_HOST: redis
-    command: sh -c './scripts/wait-for db:5432 redis:6379 -- ./bin/air'
+    command: sh -c './scripts/wait-for db:5432 redis:6379 -- air'
     ports:
       - "9000:9000"
