@@ -16,18 +16,17 @@ var (
 )
 
 func Setup() *gin.Engine {
-	engine := gin.Default()
+	engine := gin.New()
 
 	engine.Use(middlewares.Cors)
 	engine.Use(middlewares.RequestID)
 	engine.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	v1 := engine.Group("/v1")
-	secretRoutes := v1.Group("/secret")
 
-	AddPingRoutes(engine.Group("/ping"))
-	AddUserRoutes(v1.Group("/users"))
-	AddSecretRoutes(secretRoutes)
+	new(Ping).setup(engine.Group("/ping"))
+	new(User).setup(v1.Group("/users"))
+	new(Secret).setup(v1.Group("/secret"))
 
 	engine.LoadHTMLGlob("./pkg/public/html/*")
 	engine.Static("/public", "./pkg/public")
@@ -40,7 +39,7 @@ func Setup() *gin.Engine {
 	})
 
 	engine.NoRoute(func(c *gin.Context) {
-		c.HTML(404, "404.html", gin.H{})
+		controllers.Response.NotFound(c, "route not found")
 	})
 
 	return engine

@@ -5,7 +5,9 @@ import (
 	"github.com/tahsinature/future-proof-gin/pkg/middlewares"
 )
 
-func AddSecretRoutes(rg *gin.RouterGroup) {
+type Secret struct{}
+
+func (Secret) setup(rg *gin.RouterGroup) {
 	rg.Use(middlewares.Auth)
 	rg.GET("/", secretController.Get)
 }
