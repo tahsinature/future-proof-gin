@@ -6,3 +6,5 @@ syncdb:
 	go run pkg/main.go --syncf
 seed:
 	go run pkg/main.go --syncf --seed
+test:
+	go test -v ./pkg/tests
