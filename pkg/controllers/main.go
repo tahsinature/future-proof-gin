@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/tahsinature/future-proof-gin/pkg/error"
+	"github.com/tahsinature/future-proof-gin/pkg/exception"
 )
 
 type ResponseType struct{}
@@ -51,7 +51,7 @@ func (ResponseType) Unauthorized(c *gin.Context, msg string) {
 	c.JSON(http.StatusUnauthorized, gin.H{"error": msg})
 }
 
-func (ResponseType) FromError(c *gin.Context, err error.Response) {
+func (ResponseType) FromError(c *gin.Context, err exception.Response) {
 	c.JSON(err.HTTPCode, gin.H{
 		"flag":  err.Flag,
 		"error": err.Message,

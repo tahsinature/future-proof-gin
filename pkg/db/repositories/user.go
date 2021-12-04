@@ -12,10 +12,6 @@ import (
 
 type UserRepository struct{}
 
-func (m UserRepository) GetModel() models.User {
-	return models.User{}
-}
-
 func (m UserRepository) CheckUserExistsByEmail(email string) (bool, error) {
 	var user models.User
 	db := db.GetDB()

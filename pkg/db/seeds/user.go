@@ -16,7 +16,7 @@ func (UserSeeder) CreateOne() *models.User {
 	userModel := models.User{
 		Email:    gofakeit.Email(),
 		Name:     gofakeit.Name(),
-		Password: fmt.Sprintf("%x", md5.Sum([]byte(gofakeit.Password(true, true, true, true, false, 16)))),
+		Password: fmt.Sprintf("%x", md5.Sum([]byte("123456"))),
 	}
 	err := db.Create(&userModel).Error
 	if err != nil {

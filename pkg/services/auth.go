@@ -1,18 +1,58 @@
 package services
 
 import (
+	"crypto/md5"
+	"fmt"
 	"net/http"
 
-	"github.com/tahsinature/future-proof-gin/pkg/error"
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/tahsinature/future-proof-gin/pkg/config"
+	"github.com/tahsinature/future-proof-gin/pkg/db/repositories"
+	"github.com/tahsinature/future-proof-gin/pkg/exception"
 	"github.com/tahsinature/future-proof-gin/pkg/forms"
 )
 
 type AuthService struct{}
 
-func (AuthService) HandleLogin(payload forms.Login) (err *error.Response, data interface{}) {
-	err = new(error.Response).New(http.StatusUnauthorized, error.Flags.Get("INVALID_LOGIN"), "Invalid credentials")
+var userRepo = new(repositories.UserRepository)
 
-	return err, map[string]string{
-		"refreshToken": "refresh_token", "accessToken": "access_token",
+func (as AuthService) HandleLogin(payload forms.Login) (err *exception.Response, data interface{}) {
+	user, error := userRepo.GetUserByEmail(payload.Email)
+	if error != nil {
+		err = new(exception.Response).New(http.StatusUnauthorized, exception.Flags.Get("INVALID_LOGIN"), "Invalid credentials")
+		return
 	}
+
+	isValidPass := as.GenHashPassFromInput(payload.Password) == user.Password
+	if !isValidPass {
+		err = new(exception.Response).New(http.StatusUnauthorized, exception.Flags.Get("INVALID_LOGIN"), "Invalid credentials")
+		return
+	}
+
+	accessToken := as.GenAccessToken(user.ID)
+
+	return err, map[string]interface{}{
+		"accessToken": accessToken,
+	}
+}
+
+func (AuthService) HandleRegister(payload forms.Register) (err *exception.Response, data interface{}) {
+	return
+}
+
+func (AuthService) GenHashPassFromInput(input string) string {
+	hash := md5.Sum([]byte(input))
+	return fmt.Sprintf("%x", hash)
+}
+
+func (AuthService) GenAccessToken(userId string) string {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
+		userId: userId,
+	})
+	strToken, err := token.SignedString([]byte(config.JWT.AccessSecret))
+	if err != nil {
+		panic(err)
+	}
+
+	return strToken
 }
