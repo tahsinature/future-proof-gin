@@ -6,21 +6,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tahsinature/future-proof-gin/pkg/config"
 	"github.com/tahsinature/future-proof-gin/pkg/db"
-	"github.com/tahsinature/future-proof-gin/pkg/routes"
 )
 
 type Application struct{}
 
-func (*Application) Setup() *gin.Engine {
+func (*Application) Setup() {
 	config.Validate()
 	gin.SetMode(gin.ReleaseMode)
 
 	db.Init()
 	db.InitRedis()
-
-	engine := routes.Setup()
-
-	return engine
 }
 
 func (*Application) Listen(engine *gin.Engine) {

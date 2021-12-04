@@ -5,6 +5,7 @@ import (
 	"github.com/tahsinature/future-proof-gin/pkg/application"
 	"github.com/tahsinature/future-proof-gin/pkg/config"
 	"github.com/tahsinature/future-proof-gin/pkg/db/seeds"
+	"github.com/tahsinature/future-proof-gin/pkg/routes"
 )
 
 func main() {
@@ -12,8 +13,8 @@ func main() {
 
 	if config.EntryArgs.Run {
 		application := new(application.Application)
-		engine := application.Setup()
-		application.Listen(engine)
+		application.Setup()
+		application.Listen(routes.Setup())
 	}
 
 	if config.EntryArgs.Seed {

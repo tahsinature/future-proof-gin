@@ -4,9 +4,12 @@ import (
 	"testing"
 
 	"github.com/tahsinature/future-proof-gin/pkg/application"
+	"github.com/tahsinature/future-proof-gin/pkg/routes"
 )
 
 func TestPingRoute(t *testing.T) {
-	application := new(application.Application)
-	application.Setup()
+	new(application.Application).Setup()
+	routes.Setup()
+
+	// router.ServeHTTP()
 }
