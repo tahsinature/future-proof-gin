@@ -9,6 +9,6 @@ syncdb:
 seed:
 	go run pkg/main.go --syncf --seed
 test:
-	go test -v ./pkg/tests
+	go clean -cache && go test -v ./pkg/tests
 dependency:
 	docker-compose up -d db redis
