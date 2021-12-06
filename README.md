@@ -12,7 +12,7 @@
 - Execute `make syncdb`
 - Execute `make run-watch`
 
-> Or in one command you can simple do this:
+> Or in one command you can simply do this:
 >
 > ```bash
 > make dependency prepare syncdb run-watch
