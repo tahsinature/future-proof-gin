@@ -1,5 +1,0 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
-CREATE DATABASE "gin_db";
-
-CREATE DATABASE "gin_db_test";

@@ -8,7 +8,8 @@ services:
     env_file:
       - .env
     volumes:
-      - ./scripts/database.sql:/docker-entrypoint-initdb.d/database.sql
+      - ./scripts/createdb.sh:/docker-entrypoint-initdb.d/createdb.sh
+      - ./scripts/extension.sql:/docker-entrypoint-initdb.d/extension.sql
     environment:
       POSTGRES_USER: $DB_USER
       POSTGRES_PASSWORD: $DB_PASS
