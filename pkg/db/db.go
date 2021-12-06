@@ -7,7 +7,7 @@ import (
 
 	_redis "github.com/go-redis/redis/v7"
 	"github.com/tahsinature/future-proof-gin/pkg/config"
-	"github.com/tahsinature/future-proof-gin/pkg/models"
+	"github.com/tahsinature/future-proof-gin/pkg/db/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

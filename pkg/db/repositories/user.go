@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/tahsinature/future-proof-gin/pkg/db"
+	"github.com/tahsinature/future-proof-gin/pkg/db/models"
 	"github.com/tahsinature/future-proof-gin/pkg/exception"
 	"github.com/tahsinature/future-proof-gin/pkg/forms"
-	"github.com/tahsinature/future-proof-gin/pkg/models"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )

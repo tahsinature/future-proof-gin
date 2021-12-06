@@ -3,7 +3,7 @@ package seeds
 import (
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/tahsinature/future-proof-gin/pkg/db"
-	"github.com/tahsinature/future-proof-gin/pkg/models"
+	"github.com/tahsinature/future-proof-gin/pkg/db/models"
 )
 
 type PostSeeder struct{}
