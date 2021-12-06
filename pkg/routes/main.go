@@ -16,6 +16,7 @@ import (
 var (
 	userController   = new(controllers.User)
 	secretController = new(controllers.Secret)
+	pingController   = new(controllers.Ping)
 )
 
 func Setup() *gin.Engine {
