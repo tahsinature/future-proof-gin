@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tahsinature/future-proof-gin/pkg/config"
 	"github.com/tahsinature/future-proof-gin/pkg/controllers"
+	"github.com/tahsinature/future-proof-gin/pkg/exception"
 	"github.com/tahsinature/future-proof-gin/pkg/middlewares"
 )
 
@@ -41,7 +42,7 @@ func Setup() *gin.Engine {
 	})
 
 	engine.NoRoute(func(c *gin.Context) {
-		controllers.Response.NotFound(c, "route not found")
+		controllers.Response.FromError(c, exception.Response{HTTPCode: http.StatusNotFound, Message: "Seems like you are lost.", Flag: exception.Flags.Get("ROUTE_NOT_FOUNT")})
 	})
 
 	return engine
