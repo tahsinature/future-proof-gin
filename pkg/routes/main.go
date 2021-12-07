@@ -25,6 +25,7 @@ func Setup() *gin.Engine {
 	engine.Use(middlewares.Cors)
 	engine.Use(middlewares.RequestID)
 	engine.Use(gzip.Gzip(gzip.DefaultCompression))
+	engine.Use(gin.Logger())
 
 	v1 := engine.Group("/v1")
 
