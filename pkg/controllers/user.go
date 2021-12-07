@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/tahsinature/future-proof-gin/pkg/forms"
+	"github.com/tahsinature/future-proof-gin/pkg/forms/user"
 	"github.com/tahsinature/future-proof-gin/pkg/services"
 
 	"github.com/gin-gonic/gin"
@@ -12,7 +12,7 @@ type User struct{}
 var authService = new(services.AuthService)
 
 func (ctrl User) Login(c *gin.Context) {
-	var body forms.Login
+	var body user.Login
 	if isValid := ValidateBody(&body, c); !isValid {
 		return
 	}
@@ -28,7 +28,7 @@ func (ctrl User) Login(c *gin.Context) {
 }
 
 func (ctrl User) Register(c *gin.Context) {
-	var body forms.Register
+	var body user.Register
 	if isValid := ValidateBody(&body, c); !isValid {
 		return
 	}

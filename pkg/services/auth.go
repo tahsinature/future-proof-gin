@@ -9,14 +9,14 @@ import (
 	"github.com/tahsinature/future-proof-gin/pkg/config"
 	"github.com/tahsinature/future-proof-gin/pkg/db/repositories"
 	"github.com/tahsinature/future-proof-gin/pkg/exception"
-	"github.com/tahsinature/future-proof-gin/pkg/forms"
+	"github.com/tahsinature/future-proof-gin/pkg/forms/user"
 )
 
 type AuthService struct{}
 
 var userRepo = new(repositories.UserRepository)
 
-func (as AuthService) HandleLogin(payload forms.Login) (err *exception.Response, data interface{}) {
+func (as AuthService) HandleLogin(payload user.Login) (err *exception.Response, data interface{}) {
 	user, error := userRepo.GetUserByEmail(payload.Email)
 	if error != nil {
 		err = new(exception.Response).New(http.StatusUnauthorized, exception.Flags.Get("INVALID_LOGIN"), "Invalid credentials")
@@ -36,7 +36,7 @@ func (as AuthService) HandleLogin(payload forms.Login) (err *exception.Response,
 	}
 }
 
-func (AuthService) HandleRegister(payload forms.Register) (err *exception.Response, data interface{}) {
+func (AuthService) HandleRegister(payload user.Register) (err *exception.Response, data interface{}) {
 	user, err := userRepo.Register(payload)
 
 	return err, map[string]interface{}{

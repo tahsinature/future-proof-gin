@@ -1,9 +1,4 @@
-package forms
-
-type Login struct {
-	Email    string `validate:"required,email"`
-	Password string `validate:"required,gte=6,lte=8"`
-}
+package user
 
 type Register struct {
 	Name     string `validate:"required,lte=50"`

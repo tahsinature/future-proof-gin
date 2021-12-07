@@ -7,7 +7,7 @@ import (
 	"github.com/tahsinature/future-proof-gin/pkg/db"
 	"github.com/tahsinature/future-proof-gin/pkg/db/models"
 	"github.com/tahsinature/future-proof-gin/pkg/exception"
-	"github.com/tahsinature/future-proof-gin/pkg/forms"
+	"github.com/tahsinature/future-proof-gin/pkg/forms/user"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -48,7 +48,7 @@ func (m UserRepository) GetUserByEmail(email string) (models.User, error) {
 	return user, nil
 }
 
-func (m UserRepository) Register(form forms.Register) (user models.User, err *exception.Response) {
+func (m UserRepository) Register(form user.Register) (user models.User, err *exception.Response) {
 	db := db.GetDB()
 	if exists, _ := m.CheckUserExistsByEmail(form.Email); exists {
 		return user, new(exception.Response).New(http.StatusConflict, exception.Flags.Get("ALREADY_REGISTERED"), "user already exists")
