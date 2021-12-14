@@ -50,7 +50,7 @@ func Sync(force bool) {
 
 	if force {
 		for _, modelName := range allModelsNames {
-			if err := db.Exec(fmt.Sprintf(`DROP TABLE IF EXISTS "%s"`, modelName)).Error; err != nil {
+			if err := db.Exec(fmt.Sprintf(`DROP TABLE IF EXISTS "%s" CASCADE`, modelName)).Error; err != nil {
 				panic(err)
 			}
 		}
