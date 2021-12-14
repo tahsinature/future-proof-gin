@@ -22,8 +22,15 @@ func ValidateBody(schema interface{}, c *gin.Context) bool {
 	}
 
 	if err := validate.Struct(schema); err != nil {
-		Response.BadRequest(c, err.Error())
+		if !c.IsAborted() {
+			Response.FromError(c, exception.Response{
+				HTTPCode: http.StatusBadRequest,
+				Flag:     exception.Flags.Get("INVALID_BODY"),
+				Message:  err.Error(),
+			})
+		}
 		return false
+
 	}
 
 	return true
